@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="TileDefinition" load_steps=4 format=3]
+
+[ext_resource type="Script" path="res://map/tile_definition.gd" id="1_11111"]
+[ext_resource type="Texture2D" path="res://assets/sprites/spritesheet 2.png" id="2_22222"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_aaaaa"]
+atlas = ExtResource("2_22222")
+region = Rect2(368, 32, 16, 16)
+
+[resource]
+script = ExtResource("1_11111")
+id = "mob-type-imp"
+texture = SubResource("AtlasTexture_aaaaa")
+front_color = Color(1.0, 0, 0, 1.0)
+back_color = Color(0.0, 0.0, 0.0, 1.0)

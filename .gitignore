@@ -15,3 +15,23 @@
 *.sx32fsl
 *.wx64fsl
 *.wx32fsl
+
+# Godot 4+ specific ignores
+.godot/
+
+# Godot-specific ignores
+.import/
+export.cfg
+export_presets.cfg
+
+# Imported translations (automatically generated from CSV files)
+*.translation
+
+# Mono-specific ignores
+.mono/
+data_*/
+mono_crash.*.json
+.idea/
+
+log.txt
+log.txt.*

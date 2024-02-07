@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnj468gqmwnva"]
+
+[ext_resource type="Script" path="res://GameState.gd" id="1_xi7r5"]
+[ext_resource type="PackedScene" uid="uid://yybebr2sjvbh" path="res://web_socket_client.tscn" id="1_ywnhr"]
+[ext_resource type="Script" path="res://Renderer 2D.gd" id="3_dgyb6"]
+[ext_resource type="Script" path="res://Keyboard Input.gd" id="5_3a380"]
+
+[node name="Root" type="Node"]
+
+[node name="GameState" type="Node" parent="."]
+script = ExtResource("1_xi7r5")
+
+[node name="WebSocket" parent="GameState" instance=ExtResource("1_ywnhr")]
+websocket_url = "ws://127.0.0.1:32167/"
+
+[node name="Renderer 2D" type="Node2D" parent="."]
+script = ExtResource("3_dgyb6")
+
+[node name="Level" type="Node2D" parent="Renderer 2D"]
+
+[node name="Mobs" type="Node2D" parent="Renderer 2D"]
+
+[node name="Keyboard Input" type="Node" parent="." node_paths=PackedStringArray("game_state")]
+script = ExtResource("5_3a380")
+game_state = NodePath("../GameState")

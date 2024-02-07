@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="TileDefinition" load_steps=2 format=3 uid="uid://dtdv0d0b5vecm"]
+
+[ext_resource type="Script" path="res://map/tile_definition.gd" id="1_b01yr"]
+
+[resource]
+script = ExtResource("1_b01yr")
+id = "unrevealed"
+front_color = Color(0, 0, 0, 1)
+back_color = Color(0, 0, 0, 1)

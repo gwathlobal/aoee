@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=3 uid="uid://d03oql7808ao0"]
+
+[ext_resource type="Script" path="res://map/tile.gd" id="1_f4xtc"]
+[ext_resource type="Texture2D" uid="uid://bp1f3yvk2hbt" path="res://assets/sprites/spritesheet 2.png" id="2_ws2ec"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2qin8"]
+atlas = ExtResource("2_ws2ec")
+region = Rect2(336, 48, 16, 16)
+
+[node name="Tile" type="Node2D"]
+script = ExtResource("1_f4xtc")
+
+[node name="Background" type="ColorRect" parent="."]
+self_modulate = Color(0, 0, 0, 1)
+offset_left = -8.0
+offset_top = -8.0
+offset_right = 8.0
+offset_bottom = 8.0
+
+[node name="FrontGlyph" type="Sprite2D" parent="."]
+texture = SubResource("AtlasTexture_2qin8")
