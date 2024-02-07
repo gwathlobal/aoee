@@ -52,6 +52,8 @@
     (dotimes (n (array-dimension memo 0))
       (multiple-value-bind (y x) (truncate n max-x)
         (set-single-memo-* level x y :visibility nil))))
+
+  (setf (visible-mobs player) ())
   
   ;; make some of level visible according to fov
   (draw-fov (x player) (y player) 8 #'(lambda (dx dy prev-cell)
@@ -66,17 +68,21 @@
                                               (setf exit-result 'exit)
                                               (return))
 
-                                            ;; TODO here
-                                            (set-single-memo-* level dx dy
-                                                               :terrain-id (get-terrain-* level dx dy)
-                                                               :mob-type-id (if (get-mob-* level dx dy)
-                                                                                (mob-type (get-mob-* level dx dy))
-                                                                                nil)
-                                                               :item-type-id nil
-                                                               :feature-type-id nil
-                                                               :visibility t
-                                                               :revealed t
-                                                               :turn-number 0)
+                                            (let ((tmob (get-mob-* level dx dy)))
+                                              (unless (null tmob)
+                                                (pushnew (id tmob) (visible-mobs player)))
+                                              
+                                              ;; TODO here
+                                              (set-single-memo-* level dx dy
+                                                                 :terrain-id (get-terrain-* level dx dy)
+                                                                 :mob-type-id (if tmob
+                                                                                  (mob-type tmob)
+                                                                                  nil)
+                                                                 :item-type-id nil
+                                                                 :feature-type-id nil
+                                                                 :visibility t
+                                                                 :revealed t
+                                                                 :turn-number 0))
                                             
                                             (when (get-terrain-type-trait (get-terrain-* level dx dy) 
                                                                           :trait-blocks-vision)
@@ -85,7 +91,7 @@
                                           exit-result))))
 
 (defun update-visible-map-mob (mob &optional (level *level*))
-  )
+  (setf (visible-mobs mob) ()))
 
 (defun update-visible-map (mob &optional (level *level*))
   (if (eq mob *player*)

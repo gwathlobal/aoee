@@ -64,11 +64,12 @@
         (yason:with-object ()
           (yason:encode-object-element :player (id *player*))
           (yason:encode-object-element :level *level*)
-          (yason:with-object-element (:mobs)
-            (yason:with-array ()
-              (loop for mob-id in mob-id-list
-                    for mob = (get-mob-by-id mob-id)
-                    do (yason:encode-array-element mob)))))))))
+          (unless (null *player*)
+            (yason:with-object-element (:mobs)
+              (yason:with-array ()
+                (loop for mob-id in (visible-mobs *player*)
+                      for mob = (get-mob-by-id mob-id)
+                      do (yason:encode-array-element mob))))))))))
 
 (defun broadcast-game-state ()
   (aoee-server/websocket:broadcast-to-all-clients (translate-game-state-to-json)))

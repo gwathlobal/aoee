@@ -30,7 +30,9 @@
    (mob-type :initarg :mob-type :accessor mob-type)
    (x :initarg :x :initform 0 :accessor x)
    (y :initarg :y :initform 0 :accessor y)
-   (ap :initform +max-ap+ :accessor ap)))
+   (ap :initform +max-ap+ :accessor ap)
+   
+   (visible-mobs :initform () :accessor visible-mobs)))
 
 (defmethod yason:encode ((mob mob) &optional (stream *standard-output*))
   (yason:with-output (stream)
