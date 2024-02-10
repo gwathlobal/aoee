@@ -36,6 +36,9 @@
       '(:free))))
 
 (defun mob-move (mob level dir &key mob-can-move-p-result (do-act t))
+  (when (dead-p mob)
+    (return-from mob-move nil))
+  
   (unless mob-can-move-p-result
     (setf mob-can-move-p-result (mob-can-move-p mob level dir)))
   
@@ -51,20 +54,36 @@
                                                                  (second mob-can-move-p-result)
                                                                  nil))
                                       (return-from mob-move nil)))
-        (:mob (progn
-                (log:info "Mob [~A] is unable to move to (~A, ~A), another mob [~A]." 
-                          (id mob) x y (second mob-can-move-p-result))
-                (return-from mob-move nil))))
+        (:mob (if do-act
+                  (progn
+                    (log:info "Mob [~A] about to bump into mob [~A] at (~A, ~A)." 
+                              (id mob) (second mob-can-move-p-result) x y)
+                    (return-from mob-move (on-bump mob (get-mob-by-id (second mob-can-move-p-result)))))
+                  (progn
+                    (log:info "Mob [~A] is unable to move to (~A, ~A), another mob [~A]." 
+                              (id mob) x y (second mob-can-move-p-result))
+                    (return-from mob-move nil))))
+        (:free (progn
+                 (remove-mob-from-level level mob)
+                 
+                 (incf (x mob) dx)
+                 (incf (y mob) dy)
+                 
+                 (add-mob-to-level level mob)
+                 
+                 (when do-act
+                   (make-act mob +max-ap+))
+                 
+                 t))))))
 
-      
-      (remove-mob-from-level level mob)
-      
-      (incf (x mob) dx)
-      (incf (y mob) dy)
-      
-      (add-mob-to-level level mob)
+(defun on-bump (mob target)
+  (when (eq mob target)
+    (return-from on-bump nil))
+  (when (dead-p mob)
+    (return-from on-bump nil))
+  
+  (melee-attack mob target)
 
-      (when do-act
-        (make-act mob +max-ap+))
-      
-      t)))
+  (make-act mob +max-ap+)
+  
+  t)

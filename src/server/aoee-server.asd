@@ -17,6 +17,7 @@
                (:file "mob")
                (:file "terrain")
                (:file "level")
+               (:file "attack")
                (:file "movement")
                (:file "los-fov")
                (:file "ai")

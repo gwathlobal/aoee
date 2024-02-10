@@ -18,7 +18,7 @@
   (concatenate 'string (string-downcase (substitute #\_ #\- (symbol-name keyword))) ".tres"))
 
 (defun gen-terrain-template (terrain-type)
-  (gen-from-template "data-gen/terrain-template"
+  (gen-from-template "data-gen/tile-template"
                      (merge-pathnames (get-filename-from-keyword (aoee-server::id terrain-type))
                                       (get-path-to-terrain-defs))
                      (gen-rect2-dimensions (aoee-server::glyph-idx terrain-type) 
@@ -30,7 +30,7 @@
                      (gen-color-values (aoee-server::back-color terrain-type))))
 
 (defun gen-mob-template (mob-type)
-  (gen-from-template "data-gen/mob-template"
+  (gen-from-template "data-gen/tile-template"
                      (merge-pathnames (get-filename-from-keyword (aoee-server::mob-type mob-type))
                                       (get-path-to-mob-defs))
                      (gen-rect2-dimensions (aoee-server::glyph-idx mob-type) 
