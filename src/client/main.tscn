@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://bnj468gqmwnva"]
+[gd_scene load_steps=6 format=3 uid="uid://bnj468gqmwnva"]
 
 [ext_resource type="Script" path="res://GameState.gd" id="1_xi7r5"]
 [ext_resource type="PackedScene" uid="uid://yybebr2sjvbh" path="res://web_socket_client.tscn" id="1_ywnhr"]
 [ext_resource type="Script" path="res://Renderer 2D.gd" id="3_dgyb6"]
 [ext_resource type="Script" path="res://Keyboard Input.gd" id="5_3a380"]
+[ext_resource type="Script" path="res://UI.gd" id="5_hc4xi"]
 
 [node name="Root" type="Node"]
 
@@ -23,3 +24,25 @@ script = ExtResource("3_dgyb6")
 [node name="Keyboard Input" type="Node" parent="." node_paths=PackedStringArray("game_state")]
 script = ExtResource("5_3a380")
 game_state = NodePath("../GameState")
+
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("cur_turn_label")]
+layout_mode = 3
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -40.0
+offset_bottom = 40.0
+grow_horizontal = 0
+script = ExtResource("5_hc4xi")
+cur_turn_label = NodePath("CurTurnLabel")
+
+[node name="CurTurnLabel" type="Label" parent="UI"]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -118.0
+offset_bottom = 23.0
+grow_horizontal = 0
+text = "Current Turn: 0"
+horizontal_alignment = 2

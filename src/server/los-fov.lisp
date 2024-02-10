@@ -82,7 +82,7 @@
                                                                  :feature-type-id nil
                                                                  :visibility t
                                                                  :revealed t
-                                                                 :turn-number 0))
+                                                                 :turn-number (cur-turn level)))
                                             
                                             (when (get-terrain-type-trait (get-terrain-* level dx dy) 
                                                                           :trait-blocks-vision)

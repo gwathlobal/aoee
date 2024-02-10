@@ -12,13 +12,16 @@
    (memo :initform nil :type (or vectir null)) ; of type vector containing id of terrain,  mob type, item type,
                                                ; feature type, visibility flag, revealed flag, turn number
    (mobs :initform nil :type (or vector null))
-   (mob-id-list :initform (make-list 0) :accessor mob-id-list :type list)))
+   (mob-id-list :initform (make-list 0) :accessor mob-id-list :type list)
+   
+   (cur-turn :initform 0 :accessor cur-turn)))
 
 (defmethod yason:encode ((level level) &optional (stream *standard-output*))
   (yason:with-output (stream)
     (yason:with-object ()
       (yason:encode-object-element :max-x (max-x level))
       (yason:encode-object-element :max-y (max-y level))
+      (yason:encode-object-element :cur-turn (cur-turn level))
       
       (let ((memo-to-be-encoded (make-list 0)))
         (with-slots (max-x max-y) level
@@ -37,16 +40,7 @@
                                                                 :false)
                                                          :n (get-single-memo-turn-number single-memo)))
                       memo-to-be-encoded)))))
-        (yason:encode-object-element :memo (reverse memo-to-be-encoded)))
-      
-      ;; (let ((terrain-to-be-encoded (make-list 0)))
-      ;;   (with-slots (max-x max-y) level
-      ;;     (dotimes (x max-x)
-      ;;       (dotimes (y max-y)
-      ;;         (push (alexandria:plist-hash-table (list :x x :y y :t (get-terrain-* level x y))) 
-      ;;               terrain-to-be-encoded))))
-      ;;   (yason:encode-object-element :terrain terrain-to-be-encoded))
-      )))
+        (yason:encode-object-element :memo (reverse memo-to-be-encoded))))))
 
 (defun make-level ()
   (let ((level (make-instance 'level)))

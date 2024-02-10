@@ -40,6 +40,11 @@ func _update_terrain(dict):
 	if dict.has("level"):
 		var max_x:int = dict["level"]["max-x"] if dict["level"].has("max-x") else null
 		var max_y:int = dict["level"]["max-y"] if dict["level"].has("max-y") else null
+		var cur_turn:int = dict["level"]["cur-turn"] if dict["level"].has("cur-turn") else null
+		
+		Global.level_max_x = max_x
+		Global.level_max_y = max_y
+		Global.current_turn = cur_turn
 		
 		if dict["level"].has("memo"):
 			for i in len(dict["level"]["memo"]):

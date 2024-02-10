@@ -52,7 +52,8 @@
                                             (loop for mob-id in (mob-id-list *level*)
                                                   for mob = (get-mob-by-id mob-id)
                                                   do
-                                                   (incf (ap mob) +max-ap+)))
+                                                   (incf (ap mob) +max-ap+))
+                                            (incf (cur-turn *level*)))
                                           (log:info "*game-loop-state* +GAME-LOOP-FINALIZE-TURN+ -> +GAME-LOOP-INIT-TURN+~%")
                                           (set-game-loop-state +game-loop-finalize-turn+ +game-loop-init+))))))
 
