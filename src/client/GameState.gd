@@ -30,6 +30,16 @@ func game_state_message(msg):
 		_update_terrain(dict)
 		
 		CommBus.emit_signal("game_state_updated")
+	elif cmd == "player-turn":
+		if (len(msg) == 1):
+			push_error("Incorrect msg :player-turn. Expected body. ", msg)
+			return
+		
+		var dict:Dictionary = msg[1]
+		var avail = true if dict.get("available") else false
+		
+		CommBus.emit_signal("player_turn_available", avail)
+		
 
 func _update_mobs(dict):
 	Global.mobs = dict.get("mobs")

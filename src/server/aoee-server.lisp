@@ -19,6 +19,7 @@
                                  ;; TODO: solve issue when the player is null 
                                  (update-visible-map *player*)
                                  (broadcast-game-state)
+                                 (broadcast-player-turn-availability nil)
                                  
                                  ;; skip player turn if no player is available or player can not act
                                  (if (or (null *player*)
@@ -29,6 +30,7 @@
                                         ;; player turn here, *game-loop-state* moves forward from client requests 
                                         (loop while (= (get-game-loop-state) +game-loop-player-turn+)
                                               do
+                                                 (broadcast-player-turn-availability t)
                                                  (bt2:condition-wait *game-loop-cond-var* l)
                                                  (setf any-moved t))))
              (+game-loop-other-turn+ (aoee-server/websocket::with-write-lock *rwlock*
@@ -56,6 +58,16 @@
                                             (incf (cur-turn *level*)))
                                           (log:info "*game-loop-state* +GAME-LOOP-FINALIZE-TURN+ -> +GAME-LOOP-INIT-TURN+~%")
                                           (set-game-loop-state +game-loop-finalize-turn+ +game-loop-init+))))))
+
+(defun translate-player-turn-availability-to-json (available)
+  (yason:with-output-to-string* ()
+    (yason:with-array ()
+      (yason:encode-array-element :player-turn)
+      (yason:with-object ()
+        (yason:encode-object-element :available available)))))
+
+(defun broadcast-player-turn-availability (available)
+  (aoee-server/websocket:broadcast-to-all-clients (translate-player-turn-availability-to-json available)))
 
 (defun translate-game-state-to-json ()
   (with-slots (mob-id-list) *level*
@@ -132,6 +144,7 @@
           (when (funcall write-operation)
             (update-visible-map *player*)
             (broadcast-game-state)
+            (broadcast-player-turn-availability nil)
             (set-game-loop-state +game-loop-player-turn+ +game-loop-other-turn+)
             (bt2:condition-notify *game-loop-cond-var*)
             (log:info "*game-loop-state* +GAME-LOOP-PLAYER-TURN+ -> +GAME-LOOP-OTHER-TURN+~%")))

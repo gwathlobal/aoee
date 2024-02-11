@@ -64,7 +64,7 @@
   (pws:send client message))
 
 (defun broadcast-to-all-clients (message)
-  ;;(log:info "Broadcasting to ~A clients: ~A" (length *connections*) message)
+  (log:info "Broadcasting to ~A clients: ~A" (length *connections*) message)
   (loop for client in *connections* do
            (send-msg client message)))
 
